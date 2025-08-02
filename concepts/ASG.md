@@ -1,4 +1,4 @@
-ASG
+AWS Auto Scaling Group
 ====
 
 ## What is ASG
