@@ -1,0 +1,14 @@
+services:
+  backend:
+    image: tonyq2k3/lab7_backend
+    container_name: backend
+    ports:
+      - "8000:8000"
+
+  frontend:
+    image: tonyq2k3/lab7_frontend
+    container_name: frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
