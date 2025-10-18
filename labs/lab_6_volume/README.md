@@ -1,4 +1,4 @@
-Lab 5: AWS EBS Volume Usage
+Lab 6: AWS EBS Volume Usage
 =========================================================
 
 In this lab, you will:
