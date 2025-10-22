@@ -16,9 +16,9 @@ Go to Amazon ECR → Create repository
 + Visibility: Private
 + Click Create repository
 
-(Optional) If you don’t have your own image:
-You can use the public Nginx image in this lab instead of pushing your own.
-+ Image URI: public.ecr.aws/nginx/nginx:latest
+(Optional) If you don’t have your own image, you can use the public image in this lab instead of pushing your own.
++ `docker.io/tonyq2k3/lab7_frontend`
++ `docker.io/tonyq2k3/lab7_backend`
 
 ### 2. Create an ECS Cluster
 
@@ -28,24 +28,44 @@ Go to **ECS** → **Clusters** → **Create cluster**
 
 Leave all other defaults and click Create.
 
+![](./imgs/lab_7_1.PNG)
+![](./imgs/lab_7_2.PNG)
+
 ### 3. Create a Task Definition
 
-In the ECS Console, go to Task Definitions → Create new task definition:
-+ Choose Fargate → click Next step
-+ Task definition name: ecs-fargate-demo-task
+In the ECS Console, go to **Task Definitions** → **Create new task definition**:
++ Choose **Fargate**
++ **Task definition name**: ecs-fargate-demo-task
 
-Under Container definitions, click Add container
-+ Container name: demo-container
-+ Image: public.ecr.aws/nginx/nginx:latest
-(or your own ECR image URI)
+Under **Operating system/Architecture**:
++ Linux/X86_64
+
+![](./imgs/lab_7_3.PNG)
+
+Under **Task size**, choose:
++ CPU: 1 vCPU
++ Memory: 2 GB
+
+Under **Task roles**, choose a role that fits your need, we actually don't need any in this demo since the app doesn't interact with any other AWS services.
+
+![](./imgs/lab_7_4.PNG)
+
+Under **Container definitions**, click **Add container**
+
+**Container 1**:
++ Name: front-end
++ Image: docker.io/tonyq2k3/lab7_frontend
 + Port mappings: 80 (container port)
-+ Click Add
 
-Under Task size, choose:
-+ CPU: 0.25 vCPU
-+ Memory: 0.5 GB
+**Container 2**:
++ Name: back-end
++ Image: docker.io/tonyq2k3/lab7_backend
++ Port mappings: 8000 (container port)
 
-Click Create
+![](./imgs/lab_7_5.PNG)
+![](./imgs/lab_7_6.PNG)
+
+Click **Create**
 
 ### 5. Create the ECS Service
 
@@ -58,28 +78,27 @@ Configure:
 + Service name: ecs-demo-service
 + Number of tasks: 2
 
-Under Networking, choose:
+![](./imgs/lab_7_7.PNG)
+![](./imgs/lab_7_8.PNG)
+
+Under **Networking**, choose:
 + Your VPC
 + Two public subnets
 + Security group: Create a new one → allow HTTP (port 80) from anywhere
 + Check Auto-assign public IP
 
-Under Load balancing, choose:
+![](./imgs/lab_7_9.PNG)
+
+Under **Load balancing**, choose:
 + Load balancer type: Application Load Balancer
 + Select your ALB: ecs-demo-alb
 + Listener: HTTP:80 → Add to load balancer
 + Target group: ecs-demo-tg
 
-Leave defaults for Auto Scaling (we’ll configure it next).
+![](./imgs/lab_7_10.PNG)
+![](./imgs/lab_7_11.PNG)
 
-Click Create Service
-
-
-### 6. Configure Auto Scaling
-
-Go to your cluster → Services tab → Click on ecs-demo-service
-
-Under Auto Scaling (optional) → click Edit
+Under **Auto Scaling** → click Edit
 Enable Service Auto Scaling
 
 Configure:
@@ -92,7 +111,9 @@ Add a scaling policy:
 + Metric type: ECSServiceAverageCPUUtilization
 + Target value: 60%
 
-Save changes.
+![](./imgs/lab_7_12.PNG)
+
+Click **Create Service**
 
 ### 7. Test the Deployment
 
