@@ -20,6 +20,8 @@ Go to Amazon ECR → Create repository
 + `docker.io/tonyq2k3/lab7_frontend`
 + `docker.io/tonyq2k3/lab7_backend`
 
+If you want to inspect the source code, you can find it [here](../../apps/multi-container-app/).
+
 ### 2. Create an ECS Cluster
 
 Go to **ECS** → **Clusters** → **Create cluster**
@@ -56,6 +58,9 @@ Under **Container definitions**, click **Add container**
 + Name: front-end
 + Image: docker.io/tonyq2k3/lab7_frontend
 + Port mappings: 80 (container port)
++ Environment variables:
+
+    REACT_APP_BACKEND_URL = http://host.docker.internal:8000
 
 **Container 2**:
 + Name: back-end
