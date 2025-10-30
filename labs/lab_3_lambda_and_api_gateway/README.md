@@ -16,14 +16,17 @@ Create a role with:
 Save the Role ARN for later use.
 
 ### 2. Create Lambda functions
-Go to AWS Lambda > `Create function`
+Go to AWS Lambda → Create function
 
 Choose `Author from scratch`
 + Name: HelloWorldLambda
 + Runtime: Python 3.12 or Node.js 21
 + Role: Use existing role (choose the one from step 1)
 
-Function Code:
+![](./imgs/lab_3_1.PNG)
+![](./imgs/lab_3_2.PNG)
+
+Go to Code → Code source:
 + For Python:
 ```python
 def lambda_handler(event, context):
@@ -41,7 +44,9 @@ exports.handler = async (event) => {
     };
 };
 ```
-Click `Deploy`.
+![](./imgs/lab_3_3.PNG)
+
+Click **Deploy**.
 
 ### 3. Create API Gateway trigger
 In the Lambda function page, go to `Add Trigger`.
@@ -51,9 +56,15 @@ Select API Gateway
 + API type: HTTP API (simpler for labs)
 + Security: Open (for public testing)
 
+![](./imgs/lab_3_4.PNG)
+
 Click `Add`. AWS will create the API Gateway and link it.
 
+![](./imgs/lab_3_5.PNG)
+
 You should get an invoke URL similar to `https://<id>.execute-api.<region>.amazonaws.com/default/HelloWorldLambda`
+
+![](./imgs/lab_3_6.PNG)
 
 ### 4. Test the function
 Use curl to call the function:
